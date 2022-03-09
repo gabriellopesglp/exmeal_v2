@@ -3,21 +3,20 @@ defmodule Exmeal.Meals.CreateTest do
 
   import Exmeal.Factory
 
-  alias Exmeal.{Meal, User}
+  alias Exmeal.Meal
 
   describe "Create Meal" do
     test "when all params are valid, returns the meal" do
-      user_params = build(:users_params)
+      user_id = "69961117-d966-4e2f-ac55-476d4f78dddf"
+      insert(:user)
 
-      {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
-
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meals_params)
 
       {:ok, %Meal{id: id} = response} = Exmeal.create_meal(params)
 
       assert %Exmeal.Meal{
                calories: 20,
-               date: ~D[2001-05-02],
+               date: _date,
                description: "Banana",
                id: ^id,
                user_id: ^user_id
@@ -26,8 +25,9 @@ defmodule Exmeal.Meals.CreateTest do
 
     test "when there are invalid params, returns an error" do
       params = %{
-        calories: 20,
-        date: ~D[2001-05-02]
+        "calories" => 20,
+        "date" => ~D[2001-05-02],
+        "user_id" => "69961117-d966-4e2f-ac55-476d4f78dddf"
       }
 
       response = Exmeal.create_meal(params)

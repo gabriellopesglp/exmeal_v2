@@ -3,32 +3,27 @@ defmodule Exmeal.MealsControllerTest do
 
   import Exmeal.Factory
 
-  alias Exmeal.{Meal, User}
+  alias Exmeal.Meal
 
   describe "create/2" do
     test "when all params are valid, creates a meal", %{conn: conn} do
-      user_params = build(:users_params)
+      user_id = "69961117-d966-4e2f-ac55-476d4f78dddf"
+      insert(:user)
 
-      {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
-
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meals_params)
 
       response =
         conn
         |> post(Routes.meals_path(conn, :create, params))
         |> json_response(:created)
 
-        %{"meals" => %{"meal" => %{"id" => id}}} = response
-
       assert %{
-               "meals" => %{
-                 "meal" => %{
-                   "calories" => 20,
-                   "date" => "2001-05-02",
-                   "description" => "Banana",
-                   "id" => ^id,
-                   "user_id" => ^user_id
-                 }
+               "meal" => %{
+                 "calories" => 20,
+                 "date" => _date,
+                 "description" => "Banana",
+                 "id" => _id,
+                 "user_id" => ^user_id
                },
                "message" => "Meal created!"
              } = response
@@ -56,11 +51,9 @@ defmodule Exmeal.MealsControllerTest do
 
   describe "delete/2" do
     test "when id exist, delete the meal", %{conn: conn} do
-      user_params = build(:users_params)
+      insert(:user)
 
-      {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
-
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meals_params)
 
       {:ok, %Meal{id: id}} = Exmeal.create_meal(params)
 
@@ -88,11 +81,10 @@ defmodule Exmeal.MealsControllerTest do
 
   describe "update/2" do
     test "when id exist, update the meal", %{conn: conn} do
-      user_params = build(:users_params)
+      user_id = "69961117-d966-4e2f-ac55-476d4f78dddf"
+      insert(:user)
 
-      {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
-
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meals_params)
 
       {:ok, %Meal{id: id}} = Exmeal.create_meal(params)
 
@@ -104,7 +96,7 @@ defmodule Exmeal.MealsControllerTest do
       assert %{
                "meal" => %{
                  "calories" => 20,
-                 "date" => "2001-05-02",
+                 "date" => _date,
                  "description" => "Banana",
                  "id" => ^id,
                  "user_id" => ^user_id
@@ -126,11 +118,10 @@ defmodule Exmeal.MealsControllerTest do
 
   describe "get/2" do
     test "when id exist, return the meal", %{conn: conn} do
-      user_params = build(:users_params)
+      user_id = "69961117-d966-4e2f-ac55-476d4f78dddf"
+      insert(:user)
 
-      {:ok, %User{id: user_id}} = Exmeal.create_user(user_params)
-
-      params = build(:meals_params, %{user_id: user_id})
+      params = build(:meals_params)
 
       {:ok, %Meal{id: id}} = Exmeal.create_meal(params)
 
@@ -142,7 +133,7 @@ defmodule Exmeal.MealsControllerTest do
       assert %{
                "meal" => %{
                  "calories" => 20,
-                 "date" => "2001-05-02",
+                 "date" => _date,
                  "description" => "Banana",
                  "id" => ^id,
                  "user_id" => ^user_id

@@ -14,14 +14,14 @@ defmodule Exmeal.MealTest do
       Exmeal.create_user(user_params)
 
       response =
-        :meals_params
-        |>  build()
+        :meal_changeset
+        |> build()
         |> Meal.changeset()
 
       assert %Changeset{
                changes: %{
                  description: "Banana",
-                 date: ~D[2001-05-02],
+                 date: _date,
                  calories: 20,
                  user_id: _user_id
                },
